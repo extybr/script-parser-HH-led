@@ -1,34 +1,28 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import sys
 import requests
 from datetime import datetime
+from time import sleep, localtime
 from gpiozero import LED
-from time import sleep
 
 
 def lamp():
     led = LED(25)
-    delay = 1
-    temp = str(datetime.today())[14:16]
-    while int(temp) + 1 != int(str(datetime.today())[14:16]):
+    temp = localtime().tm_min
+    while temp + 2 != localtime().tm_min:
         led.on()
-        sleep(delay)
+        sleep(1)
         led.off()
-        sleep(delay)
+        sleep(1)
 
 
 def extract_jobs():
-    # professional_role = '96'  # программист
     professional_role = ''
     text_profession = '&text=DevOps'
     area = '113'  # Россия
-    # area = 1979 - Комсомольск-на-Амуре/ 1975 - Хабаровский край/ 102 - Хабаровск
-    # area = 1976 - Амурск/ 1948 - Приморский край/ 22 - Владивосток
     url = ('https://api.hh.ru/vacancies?clusters=true&enable_snippets=true&st=searchVacancy&only_'
            'with_salary=false' + str(professional_role) + str(text_profession) + '&per_page=100&'
-                                                                                 'area=' + str(
-        area))
+           'area=' + str(area))
 
     headers = {
         'Host': 'api.hh.ru',
@@ -75,9 +69,7 @@ def extract_jobs():
                 print(output)
                 text.write(output.center(120, '*') + '\n')
             text.close()
-            if (date == str(datetime.today())[:10]) and (
-                    name.find('DevOps'.lower()) or name.find('Инженер DevOps'.lower()) != -1):
-                # import led
+            if (date == str(datetime.today())[:10]) and (name.find('DevOps'.lower()) != -1):
                 lamp()
                 break
     except OSError as error:
