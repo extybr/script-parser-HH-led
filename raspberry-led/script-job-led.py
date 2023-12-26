@@ -17,12 +17,13 @@ def lamp():
 
 
 def extract_jobs():
+    """ Парсер """
     professional_role = ''
     text_profession = '&text=DevOps'
-    area = '113'  # Россия
-    url = ('https://api.hh.ru/vacancies?clusters=true&enable_snippets=true&st=searchVacancy&only_'
-           'with_salary=false' + str(professional_role) + str(text_profession) + '&per_page=100&'
-           'area=' + str(area))
+    area = '113'
+    url = ('https://api.hh.ru/vacancies?clusters=true&enable_snippets=true&st'
+           '=searchVacancy&only_with_salary=false' + str(professional_role) +
+           str(text_profession) + '&per_page=100&area=' + str(area))
 
     headers = {
         'Host': 'api.hh.ru',
@@ -38,7 +39,8 @@ def extract_jobs():
         print('Найдено результатов:', results.get('found'))
         print('\n' + '*' * 150 + '\n')
         with open('_vacancies.txt', 'w', encoding='utf-8') as text:
-            text.write('Найдено результатов:' + str(results.get('found')) + '\n\n')
+            text.write(
+                'Найдено результатов:' + str(results.get('found')) + '\n\n')
         items = results.get('items', {})
         for index in items:
             company = index['employer']['name']
@@ -54,22 +56,26 @@ def extract_jobs():
             if salary:
                 from_salary = salary['from']
                 to_salary = salary['to']
-                output = ('  ' + str(company) + '  '.center(107, '*') + '\n\n   Профессия: ' + str(
-                    name) + '\n   Зарплата: ' + str(from_salary) + ' - ' + str(
-                    to_salary) + '\n   Ссылка: ' + str(link) + '\n   /' + str(
-                    types) + '/ дата публикации: ' + str(date) + '\n   Адрес: ' + str(
-                    address) + '\n')
+                output = ('  ' + str(company) + '  '.center(107, '*') +
+                          '\n\n   Профессия: ' + str(name) + '\n   Зарплата: '
+                          + str(from_salary) + ' - ' + str(to_salary) +
+                          '\n   Ссылка: ' + str(link) + '\n   /' + str(types)
+                          + '/ дата публикации: ' + str(date) +
+                          '\n   Адрес: ' + str(address) + '\n')
                 print(output)
                 text.write(output.center(120, '*') + '\n')
             else:
-                output = ('  ' + str(company) + '  '.center(107, '*') + '\n\n   Профессия: ' + str(
-                    name) + '\n   Зарплата:  не указана\n   Ссылка: ' + str(link) + '\n   /' + str(
-                    types) + '/ дата публикации: ' + str(date) + '\n   Адрес: ' + str(
-                    address) + '\n')
+                output = ('  ' + str(company) + '  '.center(107, '*') +
+                          '\n\n   Профессия: ' + str(name) +
+                          '\n   Зарплата:  не указана\n   Ссылка: ' +
+                          str(link) + '\n   /' + str(types) +
+                          '/ дата публикации: ' + str(date) +
+                          '\n   Адрес: ' + str(address) + '\n')
                 print(output)
                 text.write(output.center(120, '*') + '\n')
             text.close()
-            if (date == str(datetime.today())[:10]) and (name.find('DevOps'.lower()) != -1):
+            if (date == str(datetime.today())[:10]) and (
+                    name.find('DevOps'.lower()) != -1):
                 lamp()
                 break
     except OSError as error:

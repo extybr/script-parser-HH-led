@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  scheduler:
+    build: ./scheduler
+    restart: always
+    depends_on:
+      - redis
+    environment:
+      TG_TOKEN: 'my_token'
+      TG_USER: 000000000
+      VACANCY: 'инженер'
+      TIMESTAMP: '2023-12-26 10:00:00'
+  redis:
+    image: redis
+    restart: always
