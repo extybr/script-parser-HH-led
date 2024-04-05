@@ -3,6 +3,7 @@
 ---
 *  **Запуск по расписанию в docker (sheduler)**
 *  **Запуск на RaspberryPi с подсветкой**
+*  **Запуск в терминале**
 ---	
 ###
 [![Python application](https://github.com/extybr/script-parser-HH-led/actions/workflows/python-publish.yml/badge.svg)](https://github.com/extybr/script-parser-HH-led/actions/workflows/python-publish.yml)
